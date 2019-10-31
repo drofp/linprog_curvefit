@@ -1,4 +1,6 @@
 # linprog_curvefit
+[![Build Status](https://travis-ci.com/drofp/linprog_curvefit.svg?branch=master)](https://travis-ci.com/drofp/linprog_curvefit)
+
 Curve fitting with linear programming.
 
 ## How it works
