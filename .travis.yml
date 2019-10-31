@@ -1,6 +1,7 @@
+sudo: false
 language: python
 jobs:
   include:
     - name: "3.6 unit test"
       python: "3.6"
-      env: TEST_SUITE=test_linprog_curvefit
+      script: python3 -m unittest test_linprog_curvefit
