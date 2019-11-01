@@ -1,5 +1,11 @@
 sudo: false
 language: python
-script: python3 -m unittest test_linprog_curvefit
+python:
+  - "3.6"
+install:
+  - pip install coveralls
+script:
+  - python3 -m unittest test_linprog_curvefit
+  - coverage run --source=linprog_curvefit -m unittest discover
 after_success:
   - coveralls
