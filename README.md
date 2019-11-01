@@ -1,5 +1,6 @@
 # linprog_curvefit
 [![Build Status](https://travis-ci.com/drofp/linprog_curvefit.svg?branch=master)](https://travis-ci.com/drofp/linprog_curvefit)
+[![Coverage Status](https://coveralls.io/repos/github/drofp/linprog_curvefit/badge.svg?branch=master)](https://coveralls.io/github/drofp/linprog_curvefit?branch=master)
 
 Curve fitting with linear programming.
 
