@@ -1,3 +1,5 @@
 sudo: false
 language: python
 script: python3 -m unittest test_linprog_curvefit
+after_success:
+  - coveralls
