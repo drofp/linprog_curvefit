@@ -4,6 +4,6 @@ install:
   - pip install coveralls
 script:
   - python3 -m unittest test_linprog_curvefit
-  - coverage run --source=requests_oauthlib -m unittest discover
+  - coverage run --source=linprog_curvefit -m unittest discover
 after_success:
   - coveralls
