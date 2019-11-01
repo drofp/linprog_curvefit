@@ -1,7 +1,9 @@
 sudo: false
 language: python
-script: python3 -m unittest test_linprog_curvefit
 install:
   - pip install coveralls
+script:
+  - python3 -m unittest test_linprog_curvefit
+  - coverage run --source=requests_oauthlib -m unittest discover
 after_success:
   - coveralls
