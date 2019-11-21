@@ -1,0 +1,40 @@
+[[package]]
+category = "main"
+description = "Google OR-Tools python libraries and modules"
+name = "ortools"
+optional = false
+python-versions = "*"
+version = "7.4.7247"
+
+[package.dependencies]
+protobuf = ">=3.10.0"
+six = ">=1.10"
+
+[[package]]
+category = "main"
+description = "Protocol Buffers"
+name = "protobuf"
+optional = false
+python-versions = "*"
+version = "3.10.0"
+
+[package.dependencies]
+setuptools = "*"
+six = ">=1.9"
+
+[[package]]
+category = "main"
+description = "Python 2 and 3 compatibility utilities"
+name = "six"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*"
+version = "1.13.0"
+
+[metadata]
+content-hash = "ddc6907141462ff7cf25007a61bae3f690472b25e3d53f04e146198d4f738e76"
+python-versions = "^3.6"
+
+[metadata.hashes]
+ortools = ["2c5a764511ec1222a617d2b92801f9706abba7599b0336ede460f49f47513ea6", "4f68685ea9f97940c31e179b080d47cc59a61135de956ab14a6d227a1aa55c64", "a66bc57f3a27f0618296b708f5df1706a49be4f55ba2431d9d18af1d10f75765", "adc0ac62774ddea4a6c20a48485526d2e69036d9415535ed086e9bd17e918a38", "c35cf9630ac7b764751057790e5fa8affa65c518ae26fa7b55b4d3995803b98b", "dd4cfdb12d292daeaed7101f3d9bb8a4c2f9f00089337dabb153f4a5561758b8", "e29626f0ee9c5ddd0be3dd41049e5d6d82f19c6835e02deae892bce7623e9cf1"]
+protobuf = ["125713564d8cfed7610e52444c9769b8dcb0b55e25cc7841f2290ee7bc86636f", "1accdb7a47e51503be64d9a57543964ba674edac103215576399d2d0e34eac77", "27003d12d4f68e3cbea9eb67427cab3bfddd47ff90670cb367fcd7a3a89b9657", "3264f3c431a631b0b31e9db2ae8c927b79fc1a7b1b06b31e8e5bcf2af91fe896", "3c5ab0f5c71ca5af27143e60613729e3488bb45f6d3f143dc918a20af8bab0bf", "45dcf8758873e3f69feab075e5f3177270739f146255225474ee0b90429adef6", "56a77d61a91186cc5676d8e11b36a5feb513873e4ae88d2ee5cf530d52bbcd3b", "5984e4947bbcef5bd849d6244aec507d31786f2dd3344139adc1489fb403b300", "6b0441da73796dd00821763bb4119674eaf252776beb50ae3883bed179a60b2a", "6f6677c5ade94d4fe75a912926d6796d5c71a2a90c2aeefe0d6f211d75c74789", "84a825a9418d7196e2acc48f8746cf1ee75877ed2f30433ab92a133f3eaf8fbe", "b842c34fe043ccf78b4a6cf1019d7b80113707d68c88842d061fa2b8fb6ddedc", "ca33d2f09dae149a1dcf942d2d825ebb06343b77b437198c9e2ef115cf5d5bc1", "cc9af00df3fc9302f537a8335668c20be27916b2277e9a5eaed510266e2bb33b", "db83b5c12c0cd30150bb568e6feb2435c49ce4e68fe2d7b903113f0e221e58fe", "f50f3b1c5c1c1334ca7ce9cad5992f098f460ffd6388a3cabad10b66c2006b09", "f99f127909731cafb841c52f9216e447d3e4afb99b17bebfad327a75aee206de"]
+six = ["1f1b7d42e254082a9db6279deae68afb421ceba6158efa6131de7b3003ee93fd", "30f610279e8b2578cab6db20741130331735c781b56053c59c4076da27f06b66"]
