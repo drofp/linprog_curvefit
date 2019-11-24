@@ -4,6 +4,7 @@ python:
   - "3.6"
 install:
   - pip install coveralls
+  - pip install ortools
 script:
   - python3 -m unittest test_linprog_curvefit
   - coverage run --source=linprog_curvefit -m unittest discover
