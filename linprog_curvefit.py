@@ -173,7 +173,7 @@ def _generate_constraints(solver, points, num_of_coeff, variables):
 
 def get_optimal_polynomial(
     points=None, coeff_ranges=None, error_def=ErrorDefinition.SUM_ABS_DEV,
-    err_max=10000):
+    err_max=10000, solver=None):
     """Optimize coefficients for any order polynomial.
 
     Args:
@@ -188,8 +188,8 @@ def get_optimal_polynomial(
     """
     if coeff_ranges is None:
         raise ValueError('Please provide appropriate coefficient range.')
-    solver = pywraplp.Solver(
-        'polynomial_solver', pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
+    # solver = pywraplp.Solver(
+    #     'polynomial_solver', pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
     variables = _generate_variables(
         solver, points, coeff_ranges, err_max=err_max,
         error_def=error_def)
@@ -198,7 +198,7 @@ def get_optimal_polynomial(
     num_of_coeff = len(coeff_ranges)
     objective = _generate_objective_fn(solver, num_of_coeff, variables)
     print('generated objective: {}'.format(objective))
-    constraints = _generate_constraints(solver, points, num_of_coeff, variables)
+    _generate_constraints(solver, points, num_of_coeff, variables)
     print('generated {} constraints!'.format(solver.NumConstraints()))
     print('variables are still: {}'.format(variables))
     solver.Solve()
@@ -206,7 +206,10 @@ def get_optimal_polynomial(
     print('variables are still: {}'.format(variables[:num_of_coeff]))
     print('m: {}, b: {}'.format(
         variables[0].solution_value(), variables[1].solution_value()))
-    return variables[:num_of_coeff]
+    var_to_val = dict()
+    for coeff in variables[:num_of_coeff]:
+        var_to_val[coeff.name()] = coeff.solution_value()
+    return var_to_val
 
 def minimize_error(points=None, coeff_ranges=None):
     """Minimize error between polynomial curve and input points.
@@ -239,9 +242,16 @@ def demo_optimal_linear():
     print('STARTING LINEAR DEMO WITH 5 POINTS FROM SWANSON PAPER')
     points = (0,1), (1,3), (2,2), (3,4), (4,5)
     coeff_ranges = ((None, None), (None, None))
+    solver = pywraplp.Solver(
+        'polynomial_solver', pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
     optimized_coefficients = get_optimal_polynomial(
-        points=points, coeff_ranges=coeff_ranges)
-    print('optimized_coefficients: {}'.format(type(optimized_coefficients)))
+        points=points, coeff_ranges=coeff_ranges, solver=solver)
+    for elm in optimized_coefficients:
+        print('elm: {}'.format(elm))
+    print(
+        'type(optimized_coefficients): {}'.format(
+        type(optimized_coefficients)))
+    print('optimized_coefficients: {}'.format(optimized_coefficients))
     # m, b = optimized_coefficients
     # print('Optimized m: {}, b: {}'.format(m, b))
 
