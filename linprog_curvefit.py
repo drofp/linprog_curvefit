@@ -16,7 +16,14 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import enum
+import string
+
 from ortools.linear_solver import pywraplp
+
+class ErrorDefinition(enum.Enum):
+    SUM_ABS_DEV = enum.auto()
+    SUM_MAX_DEVIATION = enum.auto()
 
 def demo_linear(points=None, coeff_ranges=None):
     """Optimize coefficients for a linear polynomial."""
@@ -63,8 +70,60 @@ def demo_linear(points=None, coeff_ranges=None):
     print('b =', b.solution_value())
     return m.solution_value(), b.solution_value()
 
-def optimize_polynomial(points=None, coeff_ranges=None, order=None):
+def _generate_variables(solver, points, coeff_ranges, max_err):
+    """Create coefficient variables.
+
+    Initial version works for up to 26 variable polynomial. One letter per
+    english alphabet used for coefficient names.
+    TODO(drofp): Figure out naming scheme for arbitrary number of variables.
+    """
+    num_of_coeff = len(coeff_ranges)
+    variables = []
+    coeff_names = []
+
+    # Add coefficients to variable list.
+    if num_of_coeff == 2:
+        coeff_names.append('m')
+        coeff_names.append('b')
+    else:
+        for letter_cnt in range(num_of_coeff):
+            coeff_names.append(string.ascii_lowercase[letter_cnt])
+    for coeff_num in range(num_of_coeff):
+        variables.append(
+            solver.NumVar(
+                coeff_ranges[coeff_num][0],
+                coeff_ranges[coeff_num][1],
+                coeff_names[coeff_num]))
+
+    # Add absolute error variables to variable list
+    point_cnt = 0
+    for point in points:
+        point_cnt += 1
+        variables.append(solver.NumVar(
+            0, max_err, 'e' + str(point_cnt) + '_plus'))
+        variables.append(solver.NumVar(
+            0, max_err, 'e' + str(point_cnt) + '_minus'))
+    return variables
+
+def _generate_objective_fn(solver, num_of_coeff, coefficients):
+    """Generate objective function for given error definition."""
+    pass
+
+def get_optimal_polynomial(
+    points=None, coeff_ranges=None, error_def=None, err_max=1000):
     """Optimize coefficients for any order polynomial."""
+    if coeff_ranges is None:
+        num_of_coeff = 2
+    else:
+        num_of_coeff = len(coeff_ranges)
+    if error_def is None:
+        error_def = ErrorDefinition.SUM_ABS_DEV
+    solver = pywraplp.Solver(
+        'polynomial_solver', pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
+    variables = _generate_variables(
+        solver, points=points, coeff_ranges=coeff_ranges, max_err=100)
+    # objective =
+    return
 
 def minimize_error(points=None, coeff_ranges=None):
     """Minimize error between polynomial curve and input points.
@@ -84,8 +143,8 @@ def minimize_error(points=None, coeff_ranges=None):
     if coeff_ranges is None:
         coeff_ranges = ((-100, 100), (-100, 100))
 
-    # print(optimize_polynomial(points, coeff_ranges))
-    demo_linear(points=points, coeff_ranges=coeff_ranges)
+    # print(get_optimal_polynomial(points, coeff_ranges))
+    # demo_linear(points=points, coeff_ranges=coeff_ranges)
 
     return (1.52381, 0.285714)
 
