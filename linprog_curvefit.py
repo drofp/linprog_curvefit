@@ -48,11 +48,10 @@ def _demo_add_constraints(
     # solver.Add(b - e1_plus + e1_minus == 1) # Alternative for constraint0
     constraint0 = solver.Constraint(1, 1)
     constraint0.SetCoefficient(b, 1)
-    # constraint0.SetCoefficient(m, 0)
     constraint0.SetCoefficient(e1_plus, -1)
     constraint0.SetCoefficient(e1_minus, 1)
 
-    # solver.Add(m + b - e2_plus + e2_minus == 3)
+    # solver.Add(m + b - e2_plus + e2_minus == 3) # Alternative constraint1
     constraint1 = solver.Constraint(3, 3)
     constraint1.SetCoefficient(m, 1)
     constraint1.SetCoefficient(b, 1)
@@ -159,7 +158,8 @@ def _generate_constraints(solver, points, num_of_coeff, variables):
                 print('set CONSTANT TERM coeff: {}'.format(coeff.name()))
             else:
                 constraint.SetCoefficient(coeff, point[0])
-                print('set non-constant term coeff: {}'.format(coeff.name()))
+                print('set non-constant term coeff: {}x{}'.format(
+                    point[0], coeff.name()))
 
         # Error terms
         ex_plus = variables[num_of_coeff + 2 * point_num]
@@ -181,15 +181,19 @@ def get_optimal_polynomial(
     coeff_ranges: A tuple of valid coefficient ranges, respresented as tuples
         (min, max). Nubmer of elements in list determines order of polynomial,
         from highest order (0th index) to lowest order (nth index).
+    err_def: An ErrorDefinition enum, specifying the definition for error.
+    err_max: An Integer, specifying the maximum error allowable.
+    solver: a ortools.pywraplp.Solver object, if a specific solver instance is
+        requested by caller.
 
     Returns:
-        A Tuple, the desired coefficients. Ordered from highest order polynomial
-            term to lowest order.
+        A Dictionary, the desired coefficients mapped to ther values.
     """
     if coeff_ranges is None:
         raise ValueError('Please provide appropriate coefficient range.')
-    # solver = pywraplp.Solver(
-    #     'polynomial_solver', pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
+    if solver is None:
+        solver = pywraplp.Solver(
+            'polynomial_solver', pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
     variables = _generate_variables(
         solver, points, coeff_ranges, err_max=err_max,
         error_def=error_def)
@@ -234,7 +238,7 @@ def minimize_error(points=None, coeff_ranges=None):
 
     return (1.52381, 0.285714)
 
-def demo_optimal_linear():
+def demo_optimal_linear_5points():
     """Demonstration of getting optimal linear polynomial.
 
     Uses 5 points from Swanson's curve fitting paper.
@@ -242,10 +246,10 @@ def demo_optimal_linear():
     print('STARTING LINEAR DEMO WITH 5 POINTS FROM SWANSON PAPER')
     points = (0,1), (1,3), (2,2), (3,4), (4,5)
     coeff_ranges = ((None, None), (None, None))
-    solver = pywraplp.Solver(
-        'polynomial_solver', pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
+    # solver = pywraplp.Solver(
+    #     'polynomial_solver', pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
     optimized_coefficients = get_optimal_polynomial(
-        points=points, coeff_ranges=coeff_ranges, solver=solver)
+        points=points, coeff_ranges=coeff_ranges)
     for elm in optimized_coefficients:
         print('elm: {}'.format(elm))
     print(
@@ -255,9 +259,26 @@ def demo_optimal_linear():
     # m, b = optimized_coefficients
     # print('Optimized m: {}, b: {}'.format(m, b))
 
+def demo_optimal_linear_10points():
+    print('STARTING LINEAR DEMO WITH 10 POINTS FROM WILLIAMS')
+    x_vals = [0.0, 0.5, 1.0, 1.5, 1.9, 2.5, 3.0, 3.5, 4.0, 4.5]
+    y_vals = [1.0, 0.9, 0.7, 1.5, 2.0, 2.4, 3.2, 2.0, 2.7, 3.5]
+    points = tuple(zip(x_vals, y_vals))
+    coeff_ranges = ((None, None), (None, None))
+    print(get_optimal_polynomial(points=points, coeff_ranges=coeff_ranges))
+
+def demo_optimal_quadratic_10points():
+    print('STARTING QUADRATIC DEMO WITH 10 POINTS FROM WILLIAMS')
+    x_vals = [0.0, 0.5, 1.0, 1.5, 1.9, 2.5, 3.0, 3.5, 4.0, 4.5]
+    y_vals = [1.0, 0.9, 0.7, 1.5, 2.0, 2.4, 3.2, 2.0, 2.7, 3.5]
+    points = tuple(zip(x_vals, y_vals))
+    coeff_ranges = ((None, None), (None, None), (None, None))
+    print(get_optimal_polynomial(points=points, coeff_ranges=coeff_ranges))
+
 def main():
     minimize_error()
-    demo_optimal_linear()
+    demo_optimal_quadratic_10points()
+    # demo_optimal_linear_10points()
 
 if __name__ == '__main__':
     main()
