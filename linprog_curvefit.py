@@ -47,8 +47,12 @@ def _generate_variables(solver, points, coeff_ranges, err_max, error_def):
     for coeff_num in range(num_of_coeff):
         if coeff_ranges[coeff_num][0] is None:
             lower_bound = -solver.Infinity()
+        else:
+            lower_bound = coeff_ranges[coeff_num][0]
         if coeff_ranges[coeff_num][1] is None:
             upper_bound = solver.Infinity()
+        else:
+            upper_bound = coeff_ranges[coeff_num][1]
         variables.append(
             solver.NumVar(lower_bound, upper_bound, coeff_names[coeff_num]))
 
