@@ -4,6 +4,19 @@
 
 Curve fitting with linear programming.
 
+## How to run
+Make sure [`ortools`](https://developers.google.com/optimization/install) is installed.
+
+Easy install:
+```bash
+python3 -m pip install --upgrade --user ortools
+```
+
+Run with:
+```bash
+python3 linprog_curvefit.py
+```
+
 ## How it works
 This algorithm attempts to minimize the error for a chosen set of polynomials.
 Error is calculated in a variety of ways for comparison.
