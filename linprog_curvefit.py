@@ -153,13 +153,12 @@ def _generate_constraints(solver, points, num_of_coeff, variables):
         print('generating constraint equal to: {}'.format(point[1]))
         # Resultant Coefficient terms
         for coeff_num, coeff in enumerate(variables[:num_of_coeff]):
-            if coeff_num == num_of_coeff - 1:
-                constraint.SetCoefficient(coeff, 1)
-                print('set CONSTANT TERM coeff: {}'.format(coeff.name()))
-            else:
-                constraint.SetCoefficient(coeff, point[0])
-                print('set non-constant term coeff: {}x{}'.format(
-                    point[0], coeff.name()))
+            power = num_of_coeff - coeff_num - 1
+            x_val = point[0] ** power
+            print('x_val: {}'.format(x_val))
+            constraint.SetCoefficient(coeff, x_val)
+            print('just set term with coeff: {}, point[0]: {}, power: {}'.format(
+                coeff, point[0], power))
 
         # Error terms
         ex_plus = variables[num_of_coeff + 2 * point_num]
@@ -275,10 +274,27 @@ def demo_optimal_quadratic_10points():
     coeff_ranges = ((None, None), (None, None), (None, None))
     print(get_optimal_polynomial(points=points, coeff_ranges=coeff_ranges))
 
+def demo_optimal_quadratic_19points():
+    print('STARTING QUADRATIC DEMO WITH 19 POINTS FROM WILLIAMS')
+    x_vals = [0.0, 0.5, 1.0, 1.5, 1.9, 2.5, 3.0, 3.5, 4.0, 4.5]
+    x_vals.extend([5.0, 5.5, 6.0, 6.6, 7.0, 7.6, 8.5, 9.0, 10.0])
+    y_vals = [1.0, 0.9, 0.7, 1.5, 2.0, 2.4, 3.2, 2.0, 2.7, 3.5]
+    y_vals.extend([1.0, 4.0, 3.6, 2.7, 5.7, 4.6, 6.0, 6.8, 7.3])
+    points = tuple(zip(x_vals, y_vals))
+    coeff_ranges = ((None, None), (None, None), (None, None))
+    print(get_optimal_polynomial(points=points, coeff_ranges=coeff_ranges))
+
+def demo_optimal_cubic_10points():
+    print('STARTING CUBIC DEMO WITH 10 POINTS FROM WILLIAMS')
+    x_vals = [0.0, 0.5, 1.0, 1.5, 1.9, 2.5, 3.0, 3.5, 4.0, 4.5]
+    y_vals = [1.0, 0.9, 0.7, 1.5, 2.0, 2.4, 3.2, 2.0, 2.7, 3.5]
+    points = tuple(zip(x_vals, y_vals))
+    coeff_ranges = ((None, None), (None, None), (None, None), (None, None))
+    print(get_optimal_polynomial(points=points, coeff_ranges=coeff_ranges))
+
 def main():
     minimize_error()
-    demo_optimal_quadratic_10points()
-    # demo_optimal_linear_10points()
+    demo_optimal_cubic_10points()
 
 if __name__ == '__main__':
     main()
